@@ -1,32 +1,73 @@
 @(header: layout.FaciaCardHeader, itemIndex: Int, containerIndex: Int, labelCssClasses: String = "u-faux-block-link__cta", snapType: Option[layout.SnapType] = None, isPaidFor: Boolean = false)(implicit request: RequestHeader)
 
-@import views.html.fragments.items.elements.facia_cards.itemHeader
-@import views.support._
-@import layout.FrontendLatestSnap
-@import implicits.ItemKickerImplicits._
+    @import views.html.fragments.items.elements.facia_cards.itemHeader
+    @import views.support._
+    @import layout.FrontendLatestSnap
+    @import implicits.ItemKickerImplicits._
+    @import experiments._
 
-@icon = {
-    @if(header.isExternal) { @fragments.inlineSvg("external-link", "icon") }
-    @if(header.quoted) { @fragments.inlineSvg("garnett-quote", "icon") }
-}
+    @icon = {
+    @if(header.isExternal) {
+        @fragments.inlineSvg("external-link", "icon")
+    }
+    @if(header.quoted) {
+        @fragments.inlineSvg("garnett-quote", "icon")
+    }
+    }
 
-@headline() = {
-    <span class="@labelCssClasses fc-item__headline">@icon <span class="js-headline-text">@RemoveOuterParaHtml(header.headline)</span></span>
-}
+    @headline() = {
+        <span class="@labelCssClasses fc-item__headline">@icon <span class="js-headline-text">@RemoveOuterParaHtml(header.headline)</span></span>
+    }
 
-@articleLink(html: Html) = {<a href="@header.url.get(request)" class="fc-item__link" data-link-name="article">@html</a>}
+    @articleLink(html: Html) = {
+        <a href="@header.url.get(request)" class="fc-item__link" data-link-name="article">@html</a>
+    }
 
-@itemHeader(containerIndex == 0 && itemIndex == 0, header.quoted) {
-    @if(isPaidFor) {
-        @articleLink{<span class="fc-item__kicker">Advertiser content</span> @headline()}
-    } else {
-        @header.kicker match {
-            case Some(kicker) => {
-                @articleLink{<span class="@kicker.linkClasses.mkString(" ")">@Html(kicker.kickerHtml)</span> @headline()}
+    @itemHeader(containerIndex == 0 && itemIndex == 0, header.quoted) {
+        @if(experiments.ActiveExperiments.isParticipating(experiments.RemoveKickerSlashes)) {
+            @if(isPaidFor) {
+                @articleLink {
+                    <span class="fc-item__kicker">Advertiser content</span>
+                    @headline()
+                }
+
+            } else {
+                @header.kicker match {
+                    case Some(kicker) => {
+                        @articleLink {
+                            <span class="@kicker.linkClasses.mkString(" ")">@Html(kicker.kickerHtml)</span>
+                            @headline()
+                        }
+                    }
+                    case _ => {
+                        @articleLink {
+                            @headline()
+                        }
+                    }
+                }
             }
-            case _ => {
-                @articleLink{@headline()}
+        } else {
+        @if(isPaidFor) {
+            @articleLink {
+                <span class="fc-item__kicker">Advertiser content</span>
+                @headline()
+            }
+
+        } else {
+            @header.kicker match {
+                case Some(kicker) => {
+                    @articleLink {
+                        <span class="@kicker.linkClasses.mkString(" ")">@Html(kicker.kickerHtml)</span>
+                        @headline()
+                    }
+                }
+                case _ => {
+                    @articleLink {
+                        @headline()
+                    }
+                }
             }
         }
+
+        }
     }
-}
