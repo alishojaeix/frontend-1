@@ -29,6 +29,7 @@ case class DfpDataExtractor(lineItems: Seq[GuLineItem], invalidLineItems: Seq[Gu
         keywords = soFar.keywords ++ lineItem.inlineMerchandisingTargetedKeywords,
         series = soFar.series ++ lineItem.inlineMerchandisingTargetedSeries,
         contributors = soFar.contributors ++ lineItem.inlineMerchandisingTargetedContributors,
+        sections = soFar.sections ++ lineItem.inlineMerchandisingTargetedSections,
       )
     }
   }
