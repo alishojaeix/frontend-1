@@ -231,7 +231,7 @@ const update = (state, container) => {
 const getInitialState = (container) => ({
     position: 0,
     length: Number(container.getAttribute('data-number-of-videos')),
-    videoWidth: 700,
+    videoWidth: 260,
     container,
 });
 
