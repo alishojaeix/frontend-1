@@ -40,10 +40,10 @@ $video-width-desktop: 700px;
 
 
     .vertical-width {
-        width: 260px;
+        width: 300px;
     }
     .vertical-height {
-        height: 463px;
+        height: 533px;
     }
     .media__container--hidden {
         display: block !important; // To override existing important
@@ -150,6 +150,7 @@ $video-width-desktop: 700px;
         -webkit-overflow-scrolling: touch;
         transform: none !important;
     }
+
     @include mq(desktop) {
         padding-right: 0;
         transition: transform .4s ease-out;
@@ -168,7 +169,7 @@ $video-width-desktop: 700px;
     display: none;
     @include mq(desktop) {
         // hard coding for testing - this needs fixing
-        width: 572px;
+        width: 540px;
         //2*36 + 12 * (2-1)
         //width: gs-span(3);
         position: absolute;
@@ -191,6 +192,10 @@ $video-width-desktop: 700px;
 
 .video-playlist__control--prev {
     left: 0;
+    @include mq(desktop) {
+        width: 140px;
+    }
+
     @include mq(leftCol) {
         width: gs-span(2) + $gs-gutter * 2;
 
@@ -199,6 +204,8 @@ $video-width-desktop: 700px;
         }
     }
     @include mq(wide) {
+        //width: 240px;
+
         width: gs-span(3) + $gs-gutter * 2;
 
         .has-page-skin & {
@@ -219,7 +226,7 @@ $video-width-desktop: 700px;
     right: 0;
     @include mq(leftCol) {
         // hard coding for testing - this needs fixing
-        width:692px;
+        width: 660px;
         //width: gs-span(3) + $gs-gutter * 2;
 
         .has-page-skin & {
@@ -228,7 +235,7 @@ $video-width-desktop: 700px;
     }
     @include mq(wide) {
         // hard coding for testing - this needs fixing
-        width:772px;
+        width: 740px;
         //width: gs-span(4) + $gs-gutter * 2;
 
         .has-page-skin & {
@@ -286,7 +293,7 @@ $video-width-desktop: 700px;
         margin: 0;
     }
 
-    @include mq($until: tablet) {
+    @include mq($until: desktop) {
         .video-container-overlay-link {
             z-index: 3;
         }
@@ -506,7 +513,7 @@ $video-width-desktop: 700px;
 
 .fc-item__video-container {
     // Videos on mobile should just click through to the article
-    @include mq($from: tablet) {
+    @include mq($from: desktop) {
         .youtube-media-atom {
             z-index: 1;
 
