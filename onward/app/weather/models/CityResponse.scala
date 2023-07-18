@@ -1,7 +1,7 @@
 package weather.models
 
 import common.Edition
-import common.editions.{Au, Uk, Us}
+import common.editions.{Au, Uk, Us, International}
 import play.api.libs.json.{Json, Writes}
 import weather.models.accuweather.LocationResponse
 
@@ -70,12 +70,13 @@ object CityResponse {
     country = "Australia",
   )
 
-  def fromEdition(edition: Edition): Option[CityResponse] = {
+  def fromEdition(edition: Edition): (Option[CityResponse], String) = {
     edition match {
-      case Uk => Some(London)
-      case Us => Some(NewYork)
-      case Au => Some(Sydney)
-      case _  => None
+      case Uk            => (Some(London), "UK edition")
+      case Us            => (Some(NewYork), "US edition")
+      case Au            => (Some(Sydney), "AU edition")
+      case International => (None, "Int edition")
+      case _             => (None, "Invalid edition")
     }
   }
 }

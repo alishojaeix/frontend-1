@@ -103,15 +103,17 @@ class WeatherController(weatherApi: WeatherApi, val controllerComponents: Contro
   private def getWeatherFromEdition(request: Request[AnyContent]) = {
     val edition = Edition(request)
     CityResponse.fromEdition(edition) match {
-      case Some(defaultLocation) => Future.successful(defaultLocation)
-      case None =>
+      case (Some(defaultLocation), _) => Future.successful(defaultLocation)
+      case (None, "Int edition") =>
         Future.failed(
-          CityNotfoundException(
-            s"Could not work out a default location for edition [$edition].",
-          ),
+          CityNotfoundException(204, s"International Edition has not default location"),
+        )
+      case (None, _) =>
+        Future.failed(
+          CityNotfoundException(404, s"Could not work out a default location for edition [$edition]."),
         )
     }
   }
 }
 
-case class CityNotfoundException(message: String) extends Exception(message)
+case class CityNotfoundException(status: Int, message: String) extends Exception(s"$status: $message")
