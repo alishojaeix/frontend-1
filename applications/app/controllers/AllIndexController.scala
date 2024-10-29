@@ -64,6 +64,11 @@ class AllIndexController(
       Cached(300)(WithoutRevalidationResult(MovedPermanently(s"/$path/all")))
     }
 
+  def crosswordsPressreader(): Action[AnyContent] =
+    Action.async { implicit request =>
+      indexController.render("crosswords")(request)
+    }
+
   def all(path: String): Action[AnyContent] =
     Action.async { implicit request =>
       if (ConfigAgent.shouldServeFront(path) || defaultEdition.isEditionalised(path)) {
