@@ -2,8 +2,9 @@ package model.pressed
 
 import com.gu.facia.api.utils.FaciaContentUtils
 import com.gu.facia.api.{models => fapi, utils => fapiutils}
-import common.{Edition}
+import common.Edition
 import common.commercial.EditionBranding
+import model.content.MediaAtom
 
 case class MediaSelect(
     showMainVideo: Boolean,
@@ -33,6 +34,7 @@ final case class PressedProperties(
     editionBrandings: Option[Seq[EditionBranding]],
     atomId: Option[String],
     replacementVideoAtomId: Option[String],
+    mediaAtom: Option[MediaAtom],
 ) {
   lazy val isPaidFor: Boolean = editionBrandings.exists(
     _.exists(branding => branding.branding.exists(_.isPaid) && branding.edition == Edition.defaultEdition),
@@ -72,6 +74,7 @@ object PressedProperties {
       }.toSeq),
       atomId = FaciaContentUtils.atomId(content),
       replacementVideoAtomId = FaciaContentUtils.replacementVideoAtomId(content),
+      mediaAtom = None,
     )
   }
 
